@@ -40,6 +40,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
         if (scanningResult != null) {

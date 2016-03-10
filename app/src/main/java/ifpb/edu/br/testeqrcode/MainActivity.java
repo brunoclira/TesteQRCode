@@ -1,55 +1,71 @@
 package ifpb.edu.br.testeqrcode;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
+import android.widget.TextView;
 
-import com.google.zxing.integration.android.IntentIntegrator;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity implements OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new IntentIntegrator(this).initiateScan(); // `this` is the current Activity
-        IntentIntegrator integrator = new IntentIntegrator(this);
+        //Botões da activity_main
+        Button scanBtn;
+        TextView formatTxt, contentTxt;
+
+        //Atribuindo valores ao button e ao textview
+        scanBtn = (Button) findViewById(R.id.scan_button);
+        formatTxt = (TextView) findViewById(R.id.scan_format);
+        contentTxt = (TextView) findViewById(R.id.scan_content);
+
+        //Adicionando lista ao button
+        scanBtn.setOnClickListener(this);
+
+        //Método para resposta dos clicks
+
+    public void onClick(View v) {
+        //respond to clicks
+        if (v.getId() == R.id.scan_button) {
+            //scan
+            IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+            scanIntegrator.initiateScan();
+        }
     }
+    // new IntentIntegrator(this).initiateScan(); // `this` is the current Activity
+    // IntentIntegrator integrator = new IntentIntegrator(this);
+}
 
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        //retrieve scan result
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
-    /*public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-                String contents = intent.getStringExtra("SCAN_RESULT");
-                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                // Handle successful scan
-            } else if (resultCode == RESULT_CANCELED) {
-                // Handle cancel
-            }
+        if (scanningResult != null) {
+            //we have a result
+            String scanContent = scanningResult.getContents();
+            String scanFormat = scanningResult.getFormatName();
+
+            formatTxt.setText("FORMAT: " + scanFormat);
+            contentTxt.setText("CONTENT: " + scanContent);
+
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "No scan data received!", Toast.LENGTH_SHORT);
+            toast.show();
         }
-    }*/
-
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case IntentIntegrator.REQUEST_CODE:
-                IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-                final String result = scanResult.getContents();
-                if ((result != null) && (scanResult.getFormatName().toString().contentEquals("EAN_13"))) {
-                    handler.post(new Runnable() {
-                        public void run() {
-                            Intent it = new Intent(getBaseContext(), EditarProduto.class);
-                            it.putExtra("cod_barras", result);
-                            startActivity(it);
-                        }
-                    });
-                } else {
-                    Toast.makeText(getBaseContext(), "Código inválido ou inexistente.", 5).show();
-                }
-                break;
-            default:
-        }
-    }*/
+    }
 
 }

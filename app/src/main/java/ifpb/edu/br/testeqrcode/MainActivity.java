@@ -14,7 +14,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends Activity implements OnClickListener {
 
-    //Botões da activity_main
     private Button scanBtn;
     private TextView formatTxt, contentTxt;
 
@@ -23,12 +22,10 @@ public class MainActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Atribuindo valores ao button e ao textview
         scanBtn = (Button) findViewById(R.id.scan_button);
         formatTxt = (TextView) findViewById(R.id.scan_format);
         contentTxt = (TextView) findViewById(R.id.scan_content);
 
-        //Adicionando lista ao button
         scanBtn.setOnClickListener(this);
     }
 

@@ -4,7 +4,6 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -12,8 +11,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -33,21 +30,20 @@ public class MainActivity extends Activity implements OnClickListener {
         contentTxt = (TextView) findViewById(R.id.scan_content);
 
         //Adicionando lista ao button
-        scanBtn.setOnClickListener(this);
-
-        //Método para resposta dos clicks
-
-    public void onClick(View v) {
-        //respond to clicks
-        if (v.getId() == R.id.scan_button) {
-            //scan
-            IntentIntegrator scanIntegrator = new IntentIntegrator(this);
-            scanIntegrator.initiateScan();
-        }
+        //scanBtn.setOnClickListener(MainActivity.this);
+        scanBtn.setOnClickListener(new View.OnClickListener() {
+            //Método para resposta dos click
+           @Override
+            public void onClick(View v) {
+                //respond to clicks
+                if (v.getId() == R.id.scan_button) {
+                    //scan
+                    IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
+                    scanIntegrator.initiateScan();
+                }
+            }
+        });
     }
-    // new IntentIntegrator(this).initiateScan(); // `this` is the current Activity
-    // IntentIntegrator integrator = new IntentIntegrator(this);
-}
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         //retrieve scan result
@@ -58,7 +54,9 @@ public class MainActivity extends Activity implements OnClickListener {
             String scanContent = scanningResult.getContents();
             String scanFormat = scanningResult.getFormatName();
 
+            TextView formatTxt = null;
             formatTxt.setText("FORMAT: " + scanFormat);
+            TextView contentTxt = null;
             contentTxt.setText("CONTENT: " + scanContent);
 
         } else {
@@ -67,5 +65,6 @@ public class MainActivity extends Activity implements OnClickListener {
             toast.show();
         }
     }
-
 }
+
+

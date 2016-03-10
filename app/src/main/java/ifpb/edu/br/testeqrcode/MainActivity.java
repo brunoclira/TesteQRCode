@@ -1,19 +1,17 @@
 package ifpb.edu.br.testeqrcode;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Toast;
-
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +28,12 @@ public class MainActivity extends Activity implements OnClickListener {
         contentTxt = (TextView) findViewById(R.id.scan_content);
 
         //Adicionando lista ao button
-        //scanBtn.setOnClickListener(MainActivity.this);
+        //scanBtn.setOnClickListener(this);
         scanBtn.setOnClickListener(new View.OnClickListener() {
             //Método para resposta dos click
            @Override
             public void onClick(View v) {
-                //respond to clicks
                 if (v.getId() == R.id.scan_button) {
-                    //scan
                     IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
                     scanIntegrator.initiateScan();
                 }
@@ -65,6 +61,11 @@ public class MainActivity extends Activity implements OnClickListener {
             toast.show();
         }
     }
+
+   // @Override
+    //public void onClick(View v) {
+
+    //}
 }
 
 
